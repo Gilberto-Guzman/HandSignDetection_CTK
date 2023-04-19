@@ -6,11 +6,11 @@ import os
 from PIL import Image
 from pygame import mixer
 
-import cv2
-import numpy as np
-import math
-from cvzone.ClassificationModule import Classifier
-from cvzone.HandTrackingModule import HandDetector
+# import cv2
+# import numpy as np
+# import math
+# from cvzone.ClassificationModule import Classifier
+# from cvzone.HandTrackingModule import HandDetector
 
 
 
@@ -23,7 +23,8 @@ customtkinter.set_appearance_mode("Light")
 Sound = True
 # Global capturevideo variable
 Capture = False
-
+# Global high contrast Theme 
+Contrast = False
 
 class Start_Window(customtkinter.CTk):
     def __init__(self, *args, **kwargs):
@@ -101,16 +102,7 @@ class Main_Window(customtkinter.CTkToplevel):
 
         # configure window
         self.title("Traductor de Lenguaje de Señas Méxicano")
-        # self.geometry(f"{800}x{600}")
-        # self.resizable(False, False)
         self.attributes("-fullscreen", True)
-
-        # center window on screen
-        # screen_width = self.winfo_screenwidth()
-        # screen_height = self.winfo_screenheight()
-        # x = int((screen_width - 800) / 2)
-        # y = int((screen_height - 600) / 2)
-        # self.geometry(f"+{x}+{y}")
 
         # load images
         image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "imgs")
@@ -125,16 +117,6 @@ class Main_Window(customtkinter.CTkToplevel):
             Image.open(os.path.join(image_path, "instructive.png")), size=(120, 120)
         )
 
-        # load and create background image
-        self.image_main_background = customtkinter.CTkImage(
-            Image.open(os.path.join(image_path, "main_background.png")),
-            size=(self.winfo_screenwidth(), self.winfo_screenheight()),
-        )
-        self.label_main_background = customtkinter.CTkLabel(
-            self, image=self.image_main_background, text=""
-        )
-        self.label_main_background.grid(row=0, column=0)
-
         # load sounds
         sound_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "sounds")
         mixer.init()
@@ -147,109 +129,164 @@ class Main_Window(customtkinter.CTkToplevel):
         self.instructive_button_sound = os.path.join(
             sound_path, "instructive_button_sound.mp3"
         )
+        if Contrast == False:
+            # buttons
+            self.button_handsign = customtkinter.CTkButton(
+                master=self,
+                text="",
+                height=100,
+                width=100,
+                command=self.open_handsign_window,
+                image=self.image_handsign,
+                fg_color="#FF6262",
+                compound="left",
+                hover=False,
+            )
+            self.button_handsign.place(relx=0.5, rely=0.36, anchor=tkinter.CENTER)
+            self.button_handsign.bind("<Enter>", self.handsign_focus_in)
+            self.button_handsign.bind("<Leave>", self.handsign_focus_out)
 
-        # buttons
-        self.button_handsign = customtkinter.CTkButton(
-            master=self,
-            text="",
-            height=100,
-            width=100,
-            command=self.open_handsign_window,
-            image=self.image_handsign,
-            fg_color="#FF6262",
-            compound="left",
-            hover=False,
-        )
-        self.button_handsign.place(relx=0.5, rely=0.36, anchor=tkinter.CENTER)
-        self.button_handsign.bind("<Enter>", self.handsign_focus_in)
-        self.button_handsign.bind("<Leave>", self.handsign_focus_out)
+            self.button_configuration = customtkinter.CTkButton(
+                master=self,
+                text="",
+                height=100,
+                width=100,
+                command=self.open_configuration_windown,
+                image=self.image_configuration,
+                fg_color="#59FF6A",
+                hover=False,
+            )
+            self.button_configuration.place(relx=0.4, rely=0.7, anchor=tkinter.CENTER)
+            self.button_configuration.bind("<Enter>", self.configuration_focus_in)
+            self.button_configuration.bind("<Leave>", self.configuration_focus_out)
 
-        self.button_configuration = customtkinter.CTkButton(
-            master=self,
-            text="",
-            height=100,
-            width=100,
-            command=self.open_configuration_windown,
-            image=self.image_configuration,
-            fg_color="#59FF6A",
-            hover=False,
-        )
-        self.button_configuration.place(relx=0.4, rely=0.7, anchor=tkinter.CENTER)
-        self.button_configuration.bind("<Enter>", self.configuration_focus_in)
-        self.button_configuration.bind("<Leave>", self.configuration_focus_out)
+            self.button_instructive = customtkinter.CTkButton(
+                master=self,
+                text="",
+                height=100,
+                width=100,
+                command=self.open_instructive_windown,
+                image=self.image_instructive,
+                fg_color="#4FB7FF",
+                hover=False,
+            )
+            self.button_instructive.place(relx=0.6, rely=0.7, anchor=tkinter.CENTER)
+            self.button_instructive.bind("<Enter>", self.instructive_focus_in)
+            self.button_instructive.bind("<Leave>", self.instructive_focus_out)
+        elif Contrast == True:
+            # buttons
+            self.button_handsign = customtkinter.CTkButton(
+                master=self,
+                text="",
+                height=100,
+                width=100,
+                command=self.open_handsign_window,
+                image=self.image_handsign,
+                fg_color="#000000",
+                compound="left",
+                hover=False,
+            )
+            self.button_handsign.place(relx=0.5, rely=0.36, anchor=tkinter.CENTER)
+            self.button_handsign.bind("<Enter>", self.handsign_focus_in)
+            self.button_handsign.bind("<Leave>", self.handsign_focus_out)
 
-        self.button_instructive = customtkinter.CTkButton(
-            master=self,
-            text="",
-            height=100,
-            width=100,
-            command=self.open_instructive_windown,
-            image=self.image_instructive,
-            fg_color="#4FB7FF",
-            hover=False,
-        )
-        self.button_instructive.place(relx=0.6, rely=0.7, anchor=tkinter.CENTER)
-        self.button_instructive.bind("<Enter>", self.instructive_focus_in)
-        self.button_instructive.bind("<Leave>", self.instructive_focus_out)
+            self.button_configuration = customtkinter.CTkButton(
+                master=self,
+                text="",
+                height=100,
+                width=100,
+                command=self.open_configuration_windown,
+                image=self.image_configuration,
+                fg_color="#000000",
+                hover=False,
+            )
+            self.button_configuration.place(relx=0.4, rely=0.7, anchor=tkinter.CENTER)
+            self.button_configuration.bind("<Enter>", self.configuration_focus_in)
+            self.button_configuration.bind("<Leave>", self.configuration_focus_out)
 
-    # Functions
+            self.button_instructive = customtkinter.CTkButton(
+                master=self,
+                text="",
+                height=100,
+                width=100,
+                command=self.open_instructive_windown,
+                image=self.image_instructive,
+                fg_color="#000000",
+                hover=False,
+            )
+            self.button_instructive.place(relx=0.6, rely=0.7, anchor=tkinter.CENTER)
+            self.button_instructive.bind("<Enter>", self.instructive_focus_in)
+            self.button_instructive.bind("<Leave>", self.instructive_focus_out)
+
+    # Functions - window
     def open_handsign_window(self):
         self.handsign_window = Handsign_Window(self)
-        # global Capture
-        # Capture = not Capture
-        # print(Capture)
-        # if Capture == True:
-            # Handsign_Window.withdraw(self)
-        #     print(Capture)
-        # print(Capture)
-        
-        # subprocess.call(['python', 'test01.py'])
 
-
+    def open_configuration_windown(self):
+        self.configuration_window = Configuration_Window(self)
+        Configuration_Window.withdraw(self)
+    
+    def open_instructive_windown(self):
+        self.instructive_window = Instructive_Window(self)
+        Instructive_Window.withdraw(self)
+    
+    # Functions - focus    
     def handsign_focus_in(self, event):
-        self.button_handsign.configure(
-            fg_color="#FF0000", border_width=8, border_color="black"
-        )
+        if Contrast == False:
+            self.button_handsign.configure(
+                fg_color="#FF0000", border_width=8, border_color="black"
+            )
+        else:
+            self.button_handsign.configure(
+                fg_color="#000000",border_width=8, border_color="white"
+            )
         if Sound == True:
             mixer.music.load(self.handsign_button_sound)
             mixer.music.play()
 
     def handsign_focus_out(self, event):
-        self.button_handsign.configure(fg_color="#FF6262", border_width=0)
-
-    def open_configuration_windown(self):
-        print("Boton de configuración")
-
-        self.configuration_window = Configuration_Window(self)
-        Configuration_Window.withdraw(self)
+        if Contrast == False:
+            self.button_handsign.configure(fg_color="#FF6262", border_width=0)
+        else:
+            self.button_handsign.configure(fg_color="#000000", border_width=0)
 
     def configuration_focus_in(self, event):
-        self.button_configuration.configure(
-            fg_color="#00FF1B", border_width=8, border_color="black"
-        )
+        if Contrast == False:
+            self.button_configuration.configure(
+                fg_color="#00FF1B", border_width=8, border_color="black"
+            )
+        else:
+            self.button_configuration.configure(
+                fg_color="#000000",border_width=8, border_color="white"
+            )           
         if Sound == True:
             mixer.music.load(self.configuration_button_sound)
             mixer.music.play()
 
     def configuration_focus_out(self, event):
-        self.button_configuration.configure(fg_color="#59FF6A", border_width=0)
-
-    def open_instructive_windown(self):
-        print("Boton de instrucciones")
-
-        self.instructive_window = Instructive_Window(self)
-        Instructive_Window.withdraw(self)
+        if Contrast == False:
+            self.button_configuration.configure(fg_color="#59FF6A", border_width=0)
+        else:
+            self.button_configuration.configure(fg_color="#000000",border_width=0)
 
     def instructive_focus_in(self, event):
-        self.button_instructive.configure(
-            fg_color="#0097FF", border_width=8, border_color="black"
-        )
+        if Contrast == False:
+            self.button_instructive.configure(
+                fg_color="#0097FF", border_width=8, border_color="black"
+            )
+        else:
+            self.button_instructive.configure(
+                fg_color="#000000",border_width=8, border_color="white"
+            )           
         if Sound == True:
             mixer.music.load(self.instructive_button_sound)
             mixer.music.play()
 
     def instructive_focus_out(self, event):
-        self.button_instructive.configure(fg_color="#4FB7FF", border_width=0)
+        if Contrast == False:
+            self.button_instructive.configure(fg_color="#4FB7FF", border_width=0)
+        else:
+            self.button_instructive.configure(fg_color="#000000",border_width=0)            
 
 
 class Configuration_Window(customtkinter.CTkToplevel):
@@ -258,16 +295,7 @@ class Configuration_Window(customtkinter.CTkToplevel):
 
         # configure window
         self.title("Traductor de Lenguáje de Señas Méxicano")
-        # self.geometry(f"{800}x{600}")
-        # self.resizable(False, False)
         self.attributes("-fullscreen", True)
-
-        # center window on screen
-        # screen_width = self.winfo_screenwidth()
-        # screen_height = self.winfo_screenheight()
-        # x = int((screen_width - 800) / 2)
-        # y = int((screen_height - 600) / 2)
-        # self.geometry(f"+{x}+{y}")
 
         # load images
         image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "imgs")
@@ -281,8 +309,15 @@ class Configuration_Window(customtkinter.CTkToplevel):
         self.image_disable_sound = customtkinter.CTkImage(
             Image.open(os.path.join(image_path, "disable_sound.png")), size=(120, 120)
         )
+        self.image_enable_eye = customtkinter.CTkImage(
+            Image.open(os.path.join(image_path, "enable_eye.png")), size=(120, 120)
+        )
+        self.image_disable_eye = customtkinter.CTkImage(
+            Image.open(os.path.join(image_path, "disable_eye.png")), size=(120, 120)
+        )
 
         # load and create background image
+        """
         self.image_window_background = customtkinter.CTkImage(
             Image.open(os.path.join(image_path, "window_background.png")),
             size=(self.winfo_screenwidth(), self.winfo_screenheight()),
@@ -291,6 +326,7 @@ class Configuration_Window(customtkinter.CTkToplevel):
             self, image=self.image_window_background, text=""
         )
         self.label_window_background.grid(row=0, column=0)
+        """
 
         # load sounds
         sound_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "sounds")
@@ -300,14 +336,6 @@ class Configuration_Window(customtkinter.CTkToplevel):
         self.scaling_button_sound = os.path.join(
             sound_path, "scaling_optionmenu_sound.mp3"
         )
-        # labels
-        # label_title = customtkinter.CTkLabel(
-        #     master=self,
-        #     text="Tamaño de visualización",
-        #     font=("Helvetica", 32),
-        #     fg_color=("white"),
-        # )
-        # label_title.place(relx=0.5, rely=0.1, anchor=tkinter.CENTER)
 
         # UI Scaling
         optionmenu_var = customtkinter.StringVar(value="100%")
@@ -382,6 +410,33 @@ class Configuration_Window(customtkinter.CTkToplevel):
             self.button_sound.bind("<Enter>", self.sound_focus_in)
             self.button_sound.bind("<Leave>", self.sound_focus_out)
 
+        if Contrast == True:
+            self.button_contrast = customtkinter.CTkButton(
+                master=self,
+                text="",
+                height=50,
+                width=100,
+                command=self.change_contrast_state,
+                image=self.image_enable_eye,
+                fg_color="#4FB7FF",
+                compound="left",
+                hover=False,
+            )
+            self.button_contrast.place(relx=0.5, rely=0.8, anchor=tkinter.CENTER)
+        else:
+            self.button_contrast = customtkinter.CTkButton(
+                master=self,
+                text="",
+                height=50,
+                width=100,
+                command=self.change_contrast_state,
+                image=self.image_disable_eye,
+                fg_color="#4FB7FF",
+                compound="left",
+                hover=False,
+            )
+            self.button_contrast.place(relx=0.5, rely=0.8, anchor=tkinter.CENTER)
+
     def return_focus_in(self, event):
         self.button_return.configure(
             fg_color="#0097FF", border_width=8, border_color="black"
@@ -426,6 +481,21 @@ class Configuration_Window(customtkinter.CTkToplevel):
                 image=self.image_disable_sound,
             )
 
+    def change_contrast_state(self):
+        global Contrast
+        Contrast = not Contrast
+        if Contrast == True:
+            self.button_contrast.configure(
+                image=self.image_enable_eye,
+            )
+            customtkinter.set_appearance_mode("Dark")
+        else:
+            self.button_contrast.configure(
+                image=self.image_disable_eye,
+            )
+            customtkinter.set_appearance_mode("Light")
+
+
     def open_main_windown(self):
         self.main_window = Main_Window(self)
         Configuration_Window.withdraw(self)
@@ -464,7 +534,9 @@ class Instructive_Window(customtkinter.CTkToplevel):
         self.image_instructive = customtkinter.CTkImage(
             Image.open(os.path.join(image_path, "instructive.png")), size=(120, 120)
         )
-
+        
+        # load and create background image
+        """
         self.image_window_background = customtkinter.CTkImage(
             Image.open(os.path.join(image_path, "white_background.png")),
             size=(self.winfo_screenwidth(), self.winfo_screenheight()),
@@ -473,7 +545,7 @@ class Instructive_Window(customtkinter.CTkToplevel):
             self, image=self.image_window_background, text=""
         )
         self.label_window_background.grid(row=0, column=0)
-
+        """
         # load sounds
         sound_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "sounds")
         mixer.init()
@@ -488,7 +560,6 @@ class Instructive_Window(customtkinter.CTkToplevel):
             master=self,
             text="Activa la cámara para la\ndetección del lenguaje de señas.",
             font=("Helvetica", 32),
-            fg_color=("white"),
         )
         self.label_handsign.place(relx=0.6, rely=0.2, anchor=tkinter.CENTER)
         self.label_handsign.bind("<Enter>", self.label_handsign_focus_in)
@@ -497,7 +568,6 @@ class Instructive_Window(customtkinter.CTkToplevel):
             master=self,
             text="Modifica parametros de\naccesibilidad en la aplicación.",
             font=("Helvetica", 32),
-            fg_color=("white"),
         )
         self.label_configuration.place(relx=0.6, rely=0.5, anchor=tkinter.CENTER)
         self.label_configuration.bind("<Enter>", self.label_configuration_focus_in)
@@ -555,13 +625,6 @@ class Instructive_Window(customtkinter.CTkToplevel):
         self.button_return.bind("<Leave>", self.return_focus_out)
 
 
-        # def mi_funcion():
-        #     print("Hola")
-
-
-        # mi_funcion()
-    
-
     def return_focus_in(self, event):
         self.button_return.configure(
             fg_color="#0097FF", border_width=8, border_color="black"
@@ -589,6 +652,7 @@ class Instructive_Window(customtkinter.CTkToplevel):
 
 
 class Handsign_Window(customtkinter.CTkToplevel):
+    '''   
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -666,7 +730,7 @@ class Handsign_Window(customtkinter.CTkToplevel):
                     break
             except:
                 print('Error')
-         
+    '''         
 if __name__ == "__main__":
     app = Start_Window()
     app.mainloop()
