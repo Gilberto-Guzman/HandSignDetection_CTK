@@ -333,137 +333,285 @@ class Configuration_Window(customtkinter.CTkToplevel):
         mixer.init()
         self.return_button_sound = os.path.join(sound_path, "return_button_sound.mp3")
         self.narrator_button_sound = os.path.join(sound_path, "narrator_button_sound.mp3")
-        self.scaling_button_sound = os.path.join(
-            sound_path, "scaling_optionmenu_sound.mp3"
-        )
+        self.scaling_button_sound = os.path.join(sound_path, "scaling_optionmenu_sound.mp3")   
+        self.contrast_button_sound = os.path.join(sound_path, "contrast_button_sound.mp3")
+        
+        if Contrast == False:
+            # UI Scaling
+            optionmenu_var = customtkinter.StringVar(value="100%")
+            self.scaling_optionemenu = customtkinter.CTkOptionMenu(
+                master=self,
+                values=[
+                    "100%",
+                    "110%",
+                    "120%",
+                    "130%",
+                    "140%",
+                    "150%",
+                    "160%",
+                    "170%",
+                    "180%",
+                    "190%",
+                    "200%",
+                ],
+                command=self.change_scaling_event,
+                variable=optionmenu_var,
+                anchor=tkinter.CENTER,
+                font=("Helvetica", 32),
+            )
+            # self.scaling_optionemenu.pack(padx=20, pady=20)
+            self.scaling_optionemenu.place(relx=0.5, rely=0.2, anchor=tkinter.CENTER)
+            self.scaling_optionemenu.bind("<Enter>", self.scaling_optionemenu_focus_in)
 
-        # UI Scaling
-        optionmenu_var = customtkinter.StringVar(value="100%")
-        self.scaling_optionemenu = customtkinter.CTkOptionMenu(
-            master=self,
-            values=[
-                "100%",
-                "110%",
-                "120%",
-                "130%",
-                "140%",
-                "150%",
-                "160%",
-                "170%",
-                "180%",
-                "190%",
-                "200%",
-            ],
-            command=self.change_scaling_event,
-            variable=optionmenu_var,
-            anchor=tkinter.CENTER,
-            font=("Helvetica", 32),
-        )
-        # self.scaling_optionemenu.pack(padx=20, pady=20)
-        self.scaling_optionemenu.place(relx=0.5, rely=0.2, anchor=tkinter.CENTER)
-        self.scaling_optionemenu.bind("<Enter>", self.scaling_optionemenu_focus_in)
-
-        # buttons
-        self.button_return = customtkinter.CTkButton(
-            master=self,
-            text="",
-            height=50,
-            width=100,
-            command=self.open_main_windown,
-            image=self.image_return,
-            fg_color="#4FB7FF",
-            compound="left",
-            hover=False,
-        )
-        self.button_return.place(relx=0.12, rely=0.8, anchor=tkinter.CENTER)
-        self.button_return.bind("<Enter>", self.return_focus_in)
-        self.button_return.bind("<Leave>", self.return_focus_out)
-
-        if Sound == True:
-            self.button_sound = customtkinter.CTkButton(
+            # buttons
+            self.button_return = customtkinter.CTkButton(
                 master=self,
                 text="",
                 height=50,
                 width=100,
-                command=self.change_sound_state,
-                image=self.image_enable_sound,
+                command=self.open_main_windown,
+                image=self.image_return,
                 fg_color="#4FB7FF",
                 compound="left",
                 hover=False,
             )
-            self.button_sound.place(relx=0.5, rely=0.45, anchor=tkinter.CENTER)
-            self.button_sound.bind("<Enter>", self.sound_focus_in)
-            self.button_sound.bind("<Leave>", self.sound_focus_out)
-        else:
-            self.button_sound = customtkinter.CTkButton(
-                master=self,
-                text="",
-                height=50,
-                width=100,
-                command=self.change_sound_state,
-                image=self.image_disable_sound,
-                fg_color="#4FB7FF",
-                compound="left",
-                hover=False,
-            )
-            self.button_sound.place(relx=0.5, rely=0.45, anchor=tkinter.CENTER)
-            self.button_sound.bind("<Enter>", self.sound_focus_in)
-            self.button_sound.bind("<Leave>", self.sound_focus_out)
+            self.button_return.place(relx=0.12, rely=0.8, anchor=tkinter.CENTER)
+            self.button_return.bind("<Enter>", self.return_focus_in)
+            self.button_return.bind("<Leave>", self.return_focus_out)
 
-        if Contrast == True:
-            self.button_contrast = customtkinter.CTkButton(
+            if Sound == True:
+                self.button_sound = customtkinter.CTkButton(
+                    master=self,
+                    text="",
+                    height=50,
+                    width=100,
+                    command=self.change_sound_state,
+                    image=self.image_enable_sound,
+                    fg_color="#4FB7FF",
+                    compound="left",
+                    hover=False,
+                )
+                self.button_sound.place(relx=0.5, rely=0.45, anchor=tkinter.CENTER)
+                self.button_sound.bind("<Enter>", self.sound_focus_in)
+                self.button_sound.bind("<Leave>", self.sound_focus_out)
+            else:
+                self.button_sound = customtkinter.CTkButton(
+                    master=self,
+                    text="",
+                    height=50,
+                    width=100,
+                    command=self.change_sound_state,
+                    image=self.image_disable_sound,
+                    fg_color="#4FB7FF",
+                    compound="left",
+                    hover=False,
+                )
+                self.button_sound.place(relx=0.5, rely=0.45, anchor=tkinter.CENTER)
+                self.button_sound.bind("<Enter>", self.sound_focus_in)
+                self.button_sound.bind("<Leave>", self.sound_focus_out)
+
+            if Contrast == True:
+                self.button_contrast = customtkinter.CTkButton(
+                    master=self,
+                    text="",
+                    height=50,
+                    width=100,
+                    command=self.change_contrast_state,
+                    image=self.image_enable_eye,
+                    fg_color="#4FB7FF",
+                    compound="left",
+                    hover=False,
+                )
+                self.button_contrast.place(relx=0.5, rely=0.8, anchor=tkinter.CENTER)
+                self.button_contrast.bind("<Enter>", self.contrast_focus_in)
+                self.button_contrast.bind("<Leave>", self.contrast_focus_out)            
+            else:
+                self.button_contrast = customtkinter.CTkButton(
+                    master=self,
+                    text="",
+                    height=50,
+                    width=100,
+                    command=self.change_contrast_state,
+                    image=self.image_disable_eye,
+                    fg_color="#4FB7FF",
+                    compound="left",
+                    hover=False,
+                )
+                self.button_contrast.place(relx=0.5, rely=0.8, anchor=tkinter.CENTER)
+                self.button_contrast.bind("<Enter>", self.contrast_focus_in)
+                self.button_contrast.bind("<Leave>", self.contrast_focus_out)     
+        elif Contrast == True:
+            # UI Scaling
+            optionmenu_var = customtkinter.StringVar(value="100%")
+            self.scaling_optionemenu = customtkinter.CTkOptionMenu(
+                master=self,
+                values=[
+                    "100%",
+                    "110%",
+                    "120%",
+                    "130%",
+                    "140%",
+                    "150%",
+                    "160%",
+                    "170%",
+                    "180%",
+                    "190%",
+                    "200%",
+                ],
+                command=self.change_scaling_event,
+                variable=optionmenu_var,
+                anchor=tkinter.CENTER,
+                font=("Helvetica", 32),
+                fg_color="#000000",
+                button_color="#000000",
+                button_hover_color="#000000",               
+            )
+            # self.scaling_optionemenu.pack(padx=20, pady=20)
+            self.scaling_optionemenu.place(relx=0.5, rely=0.2, anchor=tkinter.CENTER)
+            self.scaling_optionemenu.bind("<Enter>", self.scaling_optionemenu_focus_in)
+
+            # buttons
+            self.button_return = customtkinter.CTkButton(
                 master=self,
                 text="",
                 height=50,
                 width=100,
-                command=self.change_contrast_state,
-                image=self.image_enable_eye,
-                fg_color="#4FB7FF",
+                command=self.open_main_windown,
+                image=self.image_return,
+                fg_color="#000000",
                 compound="left",
                 hover=False,
             )
-            self.button_contrast.place(relx=0.5, rely=0.8, anchor=tkinter.CENTER)
-        else:
-            self.button_contrast = customtkinter.CTkButton(
-                master=self,
-                text="",
-                height=50,
-                width=100,
-                command=self.change_contrast_state,
-                image=self.image_disable_eye,
-                fg_color="#4FB7FF",
-                compound="left",
-                hover=False,
-            )
-            self.button_contrast.place(relx=0.5, rely=0.8, anchor=tkinter.CENTER)
+            self.button_return.place(relx=0.12, rely=0.8, anchor=tkinter.CENTER)
+            self.button_return.bind("<Enter>", self.return_focus_in)
+            self.button_return.bind("<Leave>", self.return_focus_out)
+
+            if Sound == True:
+                self.button_sound = customtkinter.CTkButton(
+                    master=self,
+                    text="",
+                    height=50,
+                    width=100,
+                    command=self.change_sound_state,
+                    image=self.image_enable_sound,
+                    fg_color="#000000",
+                    compound="left",
+                    hover=False,
+                )
+                self.button_sound.place(relx=0.5, rely=0.45, anchor=tkinter.CENTER)
+                self.button_sound.bind("<Enter>", self.sound_focus_in)
+                self.button_sound.bind("<Leave>", self.sound_focus_out)
+            else:
+                self.button_sound = customtkinter.CTkButton(
+                    master=self,
+                    text="",
+                    height=50,
+                    width=100,
+                    command=self.change_sound_state,
+                    image=self.image_disable_sound,
+                    fg_color="#000000",
+                    compound="left",
+                    hover=False,
+                )
+                self.button_sound.place(relx=0.5, rely=0.45, anchor=tkinter.CENTER)
+                self.button_sound.bind("<Enter>", self.sound_focus_in)
+                self.button_sound.bind("<Leave>", self.sound_focus_out)
+
+            if Contrast == True:
+                self.button_contrast = customtkinter.CTkButton(
+                    master=self,
+                    text="",
+                    height=50,
+                    width=100,
+                    command=self.change_contrast_state,
+                    image=self.image_enable_eye,
+                    fg_color="#000000",
+                    compound="left",
+                    hover=False,
+                )
+                self.button_contrast.place(relx=0.5, rely=0.8, anchor=tkinter.CENTER)
+                self.button_contrast.bind("<Enter>", self.contrast_focus_in)
+                self.button_contrast.bind("<Leave>", self.contrast_focus_out)            
+            else:
+                self.button_contrast = customtkinter.CTkButton(
+                    master=self,
+                    text="",
+                    height=50,
+                    width=100,
+                    command=self.change_contrast_state,
+                    image=self.image_disable_eye,
+                    fg_color="#000000",
+                    compound="left",
+                    hover=False,
+                )
+                self.button_contrast.place(relx=0.5, rely=0.8, anchor=tkinter.CENTER)
+                self.button_contrast.bind("<Enter>", self.contrast_focus_in)
+                self.button_contrast.bind("<Leave>", self.contrast_focus_out)
+
+
 
     def return_focus_in(self, event):
-        self.button_return.configure(
-            fg_color="#0097FF", border_width=8, border_color="black"
-        )
+        if Contrast == False:
+            self.button_return.configure(
+                fg_color="#0097FF", border_width=8, border_color="black"
+            )
+        else:
+            self.button_return.configure(
+                fg_color="#000000", border_width=8, border_color="white"
+            )             
         if Sound == True:
             mixer.music.load(self.return_button_sound)
             mixer.music.play()
 
     def return_focus_out(self, event):
-        self.button_return.configure(fg_color="#4FB7FF", border_width=0)
-
+        if Contrast == False:    
+            self.button_return.configure(fg_color="#4FB7FF", border_width=0)
+        else:
+            self.button_return.configure(fg_color="#000000",border_width=0)
+           
     def sound_focus_in(self, event):
-        self.button_sound.configure(
-            fg_color="#0097FF", border_width=8, border_color="black"
-        )
+        if Contrast == False:
+            self.button_sound.configure(
+                fg_color="#0097FF", border_width=8, border_color="black"
+            )
+        else:
+            self.button_sound.configure(
+                fg_color="#000000", border_width=8, border_color="white"
+            )            
         if Sound == True:
             mixer.music.load(self.narrator_button_sound)
             mixer.music.play()
 
     def sound_focus_out(self, event):
-        self.button_sound.configure(fg_color="#4FB7FF", border_width=0)
+        if Contrast == False:
+            self.button_sound.configure(fg_color="#4FB7FF", border_width=0)
+        else:
+            self.button_sound.configure(fg_color="#000000", border_width=0)
+           
+
+    def contrast_focus_in(self, event):
+        if Contrast == False:
+            self.button_contrast.configure(
+                fg_color="#0097FF", border_width=8, border_color="black"
+            )
+        else:
+            self.button_contrast.configure(
+                fg_color="#000000", border_width=8, border_color="white"
+            )       
+        if Sound == True:
+            mixer.music.load(self.contrast_button_sound)
+            mixer.music.play()
+
+    def contrast_focus_out(self, event):
+        if Contrast == False:
+            self.button_contrast.configure(fg_color="#4FB7FF", border_width=0)
+        else:
+            self.button_contrast.configure(fg_color="#000000",border_width=0)
 
     def scaling_optionemenu_focus_in(self, event):
         if Sound == True:
             mixer.music.load(self.scaling_button_sound)
             mixer.music.play()
-
 
     def change_scaling_event(self, new_scaling: str):
         new_scaling_float = int(new_scaling.replace("%", "")) / 100
@@ -488,12 +636,17 @@ class Configuration_Window(customtkinter.CTkToplevel):
             self.button_contrast.configure(
                 image=self.image_enable_eye,
             )
+            self.configuration_window = Configuration_Window(self)
+            Configuration_Window.withdraw(self)
             customtkinter.set_appearance_mode("Dark")
         else:
             self.button_contrast.configure(
                 image=self.image_disable_eye,
             )
+            self.configuration_window = Configuration_Window(self)
+            Configuration_Window.withdraw(self)
             customtkinter.set_appearance_mode("Light")
+        self.update_idletasks()
 
 
     def open_main_windown(self):
@@ -571,70 +724,107 @@ class Instructive_Window(customtkinter.CTkToplevel):
         )
         self.label_configuration.place(relx=0.6, rely=0.5, anchor=tkinter.CENTER)
         self.label_configuration.bind("<Enter>", self.label_configuration_focus_in)
+        if Contrast == False:
         # example buttons
-        self.button_handsign = customtkinter.CTkButton(
-            master=self,
-            text="",
-            height=100,
-            width=100,
-            image=self.image_handsign,
-            fg_color="#FF6262",
-            compound="left",
-            hover=False,
-        )
-        self.button_handsign.place(relx=0.14, rely=0.2, anchor=tkinter.CENTER)
+            self.button_handsign = customtkinter.CTkButton(
+                master=self,
+                text="",
+                height=100,
+                width=100,
+                image=self.image_handsign,
+                fg_color="#FF6262",
+                compound="left",
+                hover=False,
+            )
+            self.button_handsign.place(relx=0.14, rely=0.2, anchor=tkinter.CENTER)
 
-        self.button_configuration = customtkinter.CTkButton(
-            master=self,
-            text="",
-            height=100,
-            width=100,
-            image=self.image_configuration,
-            fg_color="#59FF6A",
-            compound="left",
-            hover=False,
-        )
-        self.button_configuration.place(relx=0.14, rely=0.5, anchor=tkinter.CENTER)
+            self.button_configuration = customtkinter.CTkButton(
+                master=self,
+                text="",
+                height=100,
+                width=100,
+                image=self.image_configuration,
+                fg_color="#59FF6A",
+                compound="left",
+                hover=False,
+            )
+            self.button_configuration.place(relx=0.14, rely=0.5, anchor=tkinter.CENTER)
 
-        # self.button_instructive = customtkinter.CTkButton(
-        #     master=self,
-        #     text="",
-        #     height=100,
-        #     width=100,
-        #     image=self.image_instructive,
-        #     fg_color="#4FB7FF",
-        #     compound="left",
-        #     hover=False,
-        # )
-        # self.button_instructive.place(relx=0.14, rely=0.8, anchor=tkinter.CENTER)
+            # functional button
+            self.button_return = customtkinter.CTkButton(
+                master=self,
+                text="",
+                height=50,
+                width=100,
+                command=self.open_main_windown,
+                image=self.image_return,
+                fg_color="#4FB7FF",
+                compound="right",
+                hover=False,
+            )
+            self.button_return.place(relx=0.87, rely=0.8, anchor=tkinter.CENTER)
+            self.button_return.bind("<Enter>", self.return_focus_in)
+            self.button_return.bind("<Leave>", self.return_focus_out)
+        elif Contrast == True:
+        # example buttons
+            self.button_handsign = customtkinter.CTkButton(
+                master=self,
+                text="",
+                height=100,
+                width=100,
+                image=self.image_handsign,
+                fg_color="#000000",
+                compound="left",
+                hover=False,
+            )
+            self.button_handsign.place(relx=0.14, rely=0.2, anchor=tkinter.CENTER)
 
-        # functional button
-        self.button_return = customtkinter.CTkButton(
-            master=self,
-            text="",
-            height=50,
-            width=100,
-            command=self.open_main_windown,
-            image=self.image_return,
-            fg_color="#4FB7FF",
-            compound="right",
-            hover=False,
-        )
-        self.button_return.place(relx=0.87, rely=0.8, anchor=tkinter.CENTER)
-        self.button_return.bind("<Enter>", self.return_focus_in)
-        self.button_return.bind("<Leave>", self.return_focus_out)
+            self.button_configuration = customtkinter.CTkButton(
+                master=self,
+                text="",
+                height=100,
+                width=100,
+                image=self.image_configuration,
+                fg_color="#000000",
+                compound="left",
+                hover=False,
+            )
+            self.button_configuration.place(relx=0.14, rely=0.5, anchor=tkinter.CENTER)
 
+            # functional button
+            self.button_return = customtkinter.CTkButton(
+                master=self,
+                text="",
+                height=50,
+                width=100,
+                command=self.open_main_windown,
+                image=self.image_return,
+                fg_color="#000000",
+                compound="right",
+                hover=False,
+            )
+            self.button_return.place(relx=0.87, rely=0.8, anchor=tkinter.CENTER)
+            self.button_return.bind("<Enter>", self.return_focus_in)
+            self.button_return.bind("<Leave>", self.return_focus_out)
 
     def return_focus_in(self, event):
-        self.button_return.configure(
-            fg_color="#0097FF", border_width=8, border_color="black"
-        )
+        if Contrast == False:
+            self.button_return.configure(
+                fg_color="#0097FF", border_width=8, border_color="black"
+            )
+        else:
+            self.button_return.configure(
+                fg_color="#000000", border_width=8, border_color="white"
+            )            
         if Sound == True:
             mixer.music.load(self.return_button_sound)
             mixer.music.play()
 
     def return_focus_out(self, event):
-        self.button_return.configure(fg_color="#4FB7FF", border_width=0)
+        if Contrast == False:
+            self.button_return.configure(fg_color="#4FB7FF", border_width=0)
+        else:
+            self.button_return.configure(fg_color="#000000", border_width=0)
 
     def label_handsign_focus_in(self, event):
         if Sound == True:
