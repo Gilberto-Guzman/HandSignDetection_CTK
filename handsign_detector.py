@@ -20,8 +20,6 @@ customtkinter.set_appearance_mode("Light")
 
 # Global sound variable
 Sound = True
-# Global capturevideo variable
-Capture = False
 # Global high contrast Theme
 Contrast = False
 
@@ -892,10 +890,6 @@ class Handsign_Window(customtkinter.CTkToplevel):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        global Capture
-        Capture = not Capture
-        print(Capture)
-
         cap = cv2.VideoCapture(0)
         detector = HandDetector(maxHands=1)
         classifier = Classifier("Model/keras_model.h5", "Model/labels.txt")
@@ -917,10 +911,18 @@ class Handsign_Window(customtkinter.CTkToplevel):
                 imgOutput = img.copy()
                 hands, img = detector.findHands(img)
 
-                cv2.imshow("Image", imgOutput)
+                if Contrast == False:
+                    cv2.rectangle(imgOutput, (20, 10),
+                                  (610, 70), (0, 0, 255), -1)
+                    cv2.putText(imgOutput, 'Presiona "S" o "C" para salir.', (25, 50),
+                                cv2.FONT_HERSHEY_SIMPLEX, 1.2, (255, 255, 255), 3, cv2.LINE_AA)
+                elif Contrast == True:
+                    cv2.rectangle(imgOutput, (20, 10),
+                                  (610, 70), (0, 0, 0), -1)
+                    cv2.putText(imgOutput, 'Presiona "S" o "C" para salir.', (25, 50),
+                                cv2.FONT_HERSHEY_SIMPLEX, 1.2, (255, 255, 255), 3, cv2.LINE_AA)
 
-                key = cv2.waitKey(1)
-
+                # Si hay algo en las manos...
                 if hands:
                     hand = hands[0]
                     x, y, w, h = hand['bbox']
@@ -956,31 +958,29 @@ class Handsign_Window(customtkinter.CTkToplevel):
                         prediction, index = classifier.getPrediction(
                             imgWhite, draw=False)
 
-                    cv2.rectangle(imgOutput, (x - offset, y - offset - 50),
-                                  (x - offset + 90, y - offset - 50 + 50), (255, 0, 255), cv2.FILLED)
-                    cv2.putText(imgOutput, labels[index], (x, y - 26),
-                                cv2.FONT_HERSHEY_COMPLEX, 1.7, (255, 255, 255), 2)
-                    cv2.rectangle(imgOutput, (x - offset, y - offset),
-                                  (x + w + offset, y + h + offset), (255, 0, 255), 4)
-
+                    if Contrast == False:
+                        cv2.rectangle(imgOutput, (x - offset, y - offset - 50),
+                                      (x - offset + 90, y - offset - 50 + 50), (255, 0, 255), cv2.FILLED)
+                        cv2.putText(imgOutput, labels[index], (x, y - 26),
+                                    cv2.FONT_HERSHEY_COMPLEX, 1.7, (255, 255, 255), 2)
+                        cv2.rectangle(imgOutput, (x - offset, y - offset),
+                                      (x + w + offset, y + h + offset), (255, 0, 255), 4)
+                    elif Contrast == True:
+                        cv2.rectangle(imgOutput, (x - offset, y - offset - 50),
+                                      (x - offset + 90, y - offset - 50 + 50), (0, 0, 0), cv2.FILLED)
+                        cv2.putText(imgOutput, labels[index], (x, y - 26),
+                                    cv2.FONT_HERSHEY_COMPLEX, 1.7, (255, 255, 255), 2)
+                        cv2.rectangle(imgOutput, (x - offset, y - offset),
+                                      (x + w + offset, y + h + offset), (0, 0, 0), 4)
                     # cv2.imshow("ImageCrop", imgCrop)
                     # cv2.imshow("ImageWhite", imgWhite)
 
-                # center window on screen
-                # screen_width = self.winfo_screenwidth()
-                # screen_height = self.winfo_screenheight()
-                # x = int((screen_width) / 4)
-                # y = int((screen_height) / 4)
-                # self.geometry(f"+{x}+{y}")
-
-                # cv2.moveWindow("Image", x, y)
                 cv2.imshow("Image", imgOutput)
-
-                if key == ord("s"):
+                key = cv2.waitKey(1)
+                if key == ord("s") or key == ord("S") or key == ord("c") or key == ord("C"):
                     Handsign_Window.withdraw(self)
                     cv2.destroyAllWindows()
                     break
-
             except:
                 print('Error')
 
