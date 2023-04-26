@@ -6,12 +6,11 @@ import os
 from PIL import Image
 from pygame import mixer
 
-# import cv2
-# import numpy as np
-# import math
-# from cvzone.ClassificationModule import Classifier
-# from cvzone.HandTrackingModule import HandDetector
-
+import cv2
+import numpy as np
+import math
+from cvzone.ClassificationModule import Classifier
+from cvzone.HandTrackingModule import HandDetector
 
 
 # Modes: "System" (standard), "Dark", "Light"
@@ -23,8 +22,9 @@ customtkinter.set_appearance_mode("Light")
 Sound = True
 # Global capturevideo variable
 Capture = False
-# Global high contrast Theme 
+# Global high contrast Theme
 Contrast = False
+
 
 class Start_Window(customtkinter.CTk):
     def __init__(self, *args, **kwargs):
@@ -44,7 +44,8 @@ class Start_Window(customtkinter.CTk):
         # self.geometry(f"+{x}+{y}")
 
         # load images
-        image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "imgs")
+        image_path = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)), "imgs")
 
         self.image_play = customtkinter.CTkImage(
             Image.open(os.path.join(image_path, "play.png")), size=(150, 150)
@@ -61,9 +62,11 @@ class Start_Window(customtkinter.CTk):
         self.label_start_background.grid(row=0, column=0)
 
         # load sounds
-        sound_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "sounds")
+        sound_path = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)), "sounds")
         mixer.init()
-        self.start_button_sound = os.path.join(sound_path, "start_button_sound.mp3")
+        self.start_button_sound = os.path.join(
+            sound_path, "start_button_sound.mp3")
 
         # buttons
         self.button_play = customtkinter.CTkButton(
@@ -105,7 +108,8 @@ class Main_Window(customtkinter.CTkToplevel):
         self.attributes("-fullscreen", True)
 
         # load images
-        image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "imgs")
+        image_path = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)), "imgs")
 
         self.image_handsign = customtkinter.CTkImage(
             Image.open(os.path.join(image_path, "handsign.png")), size=(120, 120)
@@ -118,7 +122,8 @@ class Main_Window(customtkinter.CTkToplevel):
         )
 
         # load sounds
-        sound_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "sounds")
+        sound_path = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)), "sounds")
         mixer.init()
         self.handsign_button_sound = os.path.join(
             sound_path, "handsign_button_sound.mp3"
@@ -142,7 +147,8 @@ class Main_Window(customtkinter.CTkToplevel):
                 compound="left",
                 hover=False,
             )
-            self.button_handsign.place(relx=0.5, rely=0.36, anchor=tkinter.CENTER)
+            self.button_handsign.place(
+                relx=0.5, rely=0.36, anchor=tkinter.CENTER)
             self.button_handsign.bind("<Enter>", self.handsign_focus_in)
             self.button_handsign.bind("<Leave>", self.handsign_focus_out)
 
@@ -156,9 +162,12 @@ class Main_Window(customtkinter.CTkToplevel):
                 fg_color="#59FF6A",
                 hover=False,
             )
-            self.button_configuration.place(relx=0.4, rely=0.7, anchor=tkinter.CENTER)
-            self.button_configuration.bind("<Enter>", self.configuration_focus_in)
-            self.button_configuration.bind("<Leave>", self.configuration_focus_out)
+            self.button_configuration.place(
+                relx=0.4, rely=0.7, anchor=tkinter.CENTER)
+            self.button_configuration.bind(
+                "<Enter>", self.configuration_focus_in)
+            self.button_configuration.bind(
+                "<Leave>", self.configuration_focus_out)
 
             self.button_instructive = customtkinter.CTkButton(
                 master=self,
@@ -170,7 +179,8 @@ class Main_Window(customtkinter.CTkToplevel):
                 fg_color="#4FB7FF",
                 hover=False,
             )
-            self.button_instructive.place(relx=0.6, rely=0.7, anchor=tkinter.CENTER)
+            self.button_instructive.place(
+                relx=0.6, rely=0.7, anchor=tkinter.CENTER)
             self.button_instructive.bind("<Enter>", self.instructive_focus_in)
             self.button_instructive.bind("<Leave>", self.instructive_focus_out)
         elif Contrast == True:
@@ -186,7 +196,8 @@ class Main_Window(customtkinter.CTkToplevel):
                 compound="left",
                 hover=False,
             )
-            self.button_handsign.place(relx=0.5, rely=0.36, anchor=tkinter.CENTER)
+            self.button_handsign.place(
+                relx=0.5, rely=0.36, anchor=tkinter.CENTER)
             self.button_handsign.bind("<Enter>", self.handsign_focus_in)
             self.button_handsign.bind("<Leave>", self.handsign_focus_out)
 
@@ -200,9 +211,12 @@ class Main_Window(customtkinter.CTkToplevel):
                 fg_color="#000000",
                 hover=False,
             )
-            self.button_configuration.place(relx=0.4, rely=0.7, anchor=tkinter.CENTER)
-            self.button_configuration.bind("<Enter>", self.configuration_focus_in)
-            self.button_configuration.bind("<Leave>", self.configuration_focus_out)
+            self.button_configuration.place(
+                relx=0.4, rely=0.7, anchor=tkinter.CENTER)
+            self.button_configuration.bind(
+                "<Enter>", self.configuration_focus_in)
+            self.button_configuration.bind(
+                "<Leave>", self.configuration_focus_out)
 
             self.button_instructive = customtkinter.CTkButton(
                 master=self,
@@ -214,7 +228,8 @@ class Main_Window(customtkinter.CTkToplevel):
                 fg_color="#000000",
                 hover=False,
             )
-            self.button_instructive.place(relx=0.6, rely=0.7, anchor=tkinter.CENTER)
+            self.button_instructive.place(
+                relx=0.6, rely=0.7, anchor=tkinter.CENTER)
             self.button_instructive.bind("<Enter>", self.instructive_focus_in)
             self.button_instructive.bind("<Leave>", self.instructive_focus_out)
 
@@ -225,12 +240,12 @@ class Main_Window(customtkinter.CTkToplevel):
     def open_configuration_windown(self):
         self.configuration_window = Configuration_Window(self)
         Configuration_Window.withdraw(self)
-    
+
     def open_instructive_windown(self):
         self.instructive_window = Instructive_Window(self)
         Instructive_Window.withdraw(self)
-    
-    # Functions - focus    
+
+    # Functions - focus
     def handsign_focus_in(self, event):
         if Contrast == False:
             self.button_handsign.configure(
@@ -238,7 +253,7 @@ class Main_Window(customtkinter.CTkToplevel):
             )
         else:
             self.button_handsign.configure(
-                fg_color="#000000",border_width=8, border_color="white"
+                fg_color="#000000", border_width=8, border_color="white"
             )
         if Sound == True:
             mixer.music.load(self.handsign_button_sound)
@@ -257,17 +272,19 @@ class Main_Window(customtkinter.CTkToplevel):
             )
         else:
             self.button_configuration.configure(
-                fg_color="#000000",border_width=8, border_color="white"
-            )           
+                fg_color="#000000", border_width=8, border_color="white"
+            )
         if Sound == True:
             mixer.music.load(self.configuration_button_sound)
             mixer.music.play()
 
     def configuration_focus_out(self, event):
         if Contrast == False:
-            self.button_configuration.configure(fg_color="#59FF6A", border_width=0)
+            self.button_configuration.configure(
+                fg_color="#59FF6A", border_width=0)
         else:
-            self.button_configuration.configure(fg_color="#000000",border_width=0)
+            self.button_configuration.configure(
+                fg_color="#000000", border_width=0)
 
     def instructive_focus_in(self, event):
         if Contrast == False:
@@ -276,17 +293,19 @@ class Main_Window(customtkinter.CTkToplevel):
             )
         else:
             self.button_instructive.configure(
-                fg_color="#000000",border_width=8, border_color="white"
-            )           
+                fg_color="#000000", border_width=8, border_color="white"
+            )
         if Sound == True:
             mixer.music.load(self.instructive_button_sound)
             mixer.music.play()
 
     def instructive_focus_out(self, event):
         if Contrast == False:
-            self.button_instructive.configure(fg_color="#4FB7FF", border_width=0)
+            self.button_instructive.configure(
+                fg_color="#4FB7FF", border_width=0)
         else:
-            self.button_instructive.configure(fg_color="#000000",border_width=0)            
+            self.button_instructive.configure(
+                fg_color="#000000", border_width=0)
 
 
 class Configuration_Window(customtkinter.CTkToplevel):
@@ -298,7 +317,8 @@ class Configuration_Window(customtkinter.CTkToplevel):
         self.attributes("-fullscreen", True)
 
         # load images
-        image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "imgs")
+        image_path = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)), "imgs")
 
         self.image_return = customtkinter.CTkImage(
             Image.open(os.path.join(image_path, "return.png")), size=(120, 120)
@@ -329,13 +349,18 @@ class Configuration_Window(customtkinter.CTkToplevel):
         """
 
         # load sounds
-        sound_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "sounds")
+        sound_path = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)), "sounds")
         mixer.init()
-        self.return_button_sound = os.path.join(sound_path, "return_button_sound.mp3")
-        self.narrator_button_sound = os.path.join(sound_path, "narrator_button_sound.mp3")
-        self.scaling_button_sound = os.path.join(sound_path, "scaling_optionmenu_sound.mp3")   
-        self.contrast_button_sound = os.path.join(sound_path, "contrast_button_sound.mp3")
-        
+        self.return_button_sound = os.path.join(
+            sound_path, "return_button_sound.mp3")
+        self.narrator_button_sound = os.path.join(
+            sound_path, "narrator_button_sound.mp3")
+        self.scaling_button_sound = os.path.join(
+            sound_path, "scaling_optionmenu_sound.mp3")
+        self.contrast_button_sound = os.path.join(
+            sound_path, "contrast_button_sound.mp3")
+
         if Contrast == False:
             # UI Scaling
             optionmenu_var = customtkinter.StringVar(value="100%")
@@ -360,8 +385,10 @@ class Configuration_Window(customtkinter.CTkToplevel):
                 font=("Helvetica", 32),
             )
             # self.scaling_optionemenu.pack(padx=20, pady=20)
-            self.scaling_optionemenu.place(relx=0.5, rely=0.2, anchor=tkinter.CENTER)
-            self.scaling_optionemenu.bind("<Enter>", self.scaling_optionemenu_focus_in)
+            self.scaling_optionemenu.place(
+                relx=0.5, rely=0.2, anchor=tkinter.CENTER)
+            self.scaling_optionemenu.bind(
+                "<Enter>", self.scaling_optionemenu_focus_in)
 
             # buttons
             self.button_return = customtkinter.CTkButton(
@@ -375,7 +402,8 @@ class Configuration_Window(customtkinter.CTkToplevel):
                 compound="left",
                 hover=False,
             )
-            self.button_return.place(relx=0.12, rely=0.8, anchor=tkinter.CENTER)
+            self.button_return.place(
+                relx=0.12, rely=0.8, anchor=tkinter.CENTER)
             self.button_return.bind("<Enter>", self.return_focus_in)
             self.button_return.bind("<Leave>", self.return_focus_out)
 
@@ -391,7 +419,8 @@ class Configuration_Window(customtkinter.CTkToplevel):
                     compound="left",
                     hover=False,
                 )
-                self.button_sound.place(relx=0.5, rely=0.45, anchor=tkinter.CENTER)
+                self.button_sound.place(
+                    relx=0.5, rely=0.45, anchor=tkinter.CENTER)
                 self.button_sound.bind("<Enter>", self.sound_focus_in)
                 self.button_sound.bind("<Leave>", self.sound_focus_out)
             else:
@@ -406,7 +435,8 @@ class Configuration_Window(customtkinter.CTkToplevel):
                     compound="left",
                     hover=False,
                 )
-                self.button_sound.place(relx=0.5, rely=0.45, anchor=tkinter.CENTER)
+                self.button_sound.place(
+                    relx=0.5, rely=0.45, anchor=tkinter.CENTER)
                 self.button_sound.bind("<Enter>", self.sound_focus_in)
                 self.button_sound.bind("<Leave>", self.sound_focus_out)
 
@@ -422,9 +452,10 @@ class Configuration_Window(customtkinter.CTkToplevel):
                     compound="left",
                     hover=False,
                 )
-                self.button_contrast.place(relx=0.5, rely=0.8, anchor=tkinter.CENTER)
+                self.button_contrast.place(
+                    relx=0.5, rely=0.8, anchor=tkinter.CENTER)
                 self.button_contrast.bind("<Enter>", self.contrast_focus_in)
-                self.button_contrast.bind("<Leave>", self.contrast_focus_out)            
+                self.button_contrast.bind("<Leave>", self.contrast_focus_out)
             else:
                 self.button_contrast = customtkinter.CTkButton(
                     master=self,
@@ -437,9 +468,10 @@ class Configuration_Window(customtkinter.CTkToplevel):
                     compound="left",
                     hover=False,
                 )
-                self.button_contrast.place(relx=0.5, rely=0.8, anchor=tkinter.CENTER)
+                self.button_contrast.place(
+                    relx=0.5, rely=0.8, anchor=tkinter.CENTER)
                 self.button_contrast.bind("<Enter>", self.contrast_focus_in)
-                self.button_contrast.bind("<Leave>", self.contrast_focus_out)     
+                self.button_contrast.bind("<Leave>", self.contrast_focus_out)
         elif Contrast == True:
             # UI Scaling
             optionmenu_var = customtkinter.StringVar(value="100%")
@@ -464,11 +496,13 @@ class Configuration_Window(customtkinter.CTkToplevel):
                 font=("Helvetica", 32),
                 fg_color="#000000",
                 button_color="#000000",
-                button_hover_color="#000000",               
+                button_hover_color="#000000",
             )
             # self.scaling_optionemenu.pack(padx=20, pady=20)
-            self.scaling_optionemenu.place(relx=0.5, rely=0.2, anchor=tkinter.CENTER)
-            self.scaling_optionemenu.bind("<Enter>", self.scaling_optionemenu_focus_in)
+            self.scaling_optionemenu.place(
+                relx=0.5, rely=0.2, anchor=tkinter.CENTER)
+            self.scaling_optionemenu.bind(
+                "<Enter>", self.scaling_optionemenu_focus_in)
 
             # buttons
             self.button_return = customtkinter.CTkButton(
@@ -482,7 +516,8 @@ class Configuration_Window(customtkinter.CTkToplevel):
                 compound="left",
                 hover=False,
             )
-            self.button_return.place(relx=0.12, rely=0.8, anchor=tkinter.CENTER)
+            self.button_return.place(
+                relx=0.12, rely=0.8, anchor=tkinter.CENTER)
             self.button_return.bind("<Enter>", self.return_focus_in)
             self.button_return.bind("<Leave>", self.return_focus_out)
 
@@ -498,7 +533,8 @@ class Configuration_Window(customtkinter.CTkToplevel):
                     compound="left",
                     hover=False,
                 )
-                self.button_sound.place(relx=0.5, rely=0.45, anchor=tkinter.CENTER)
+                self.button_sound.place(
+                    relx=0.5, rely=0.45, anchor=tkinter.CENTER)
                 self.button_sound.bind("<Enter>", self.sound_focus_in)
                 self.button_sound.bind("<Leave>", self.sound_focus_out)
             else:
@@ -513,7 +549,8 @@ class Configuration_Window(customtkinter.CTkToplevel):
                     compound="left",
                     hover=False,
                 )
-                self.button_sound.place(relx=0.5, rely=0.45, anchor=tkinter.CENTER)
+                self.button_sound.place(
+                    relx=0.5, rely=0.45, anchor=tkinter.CENTER)
                 self.button_sound.bind("<Enter>", self.sound_focus_in)
                 self.button_sound.bind("<Leave>", self.sound_focus_out)
 
@@ -529,9 +566,10 @@ class Configuration_Window(customtkinter.CTkToplevel):
                     compound="left",
                     hover=False,
                 )
-                self.button_contrast.place(relx=0.5, rely=0.8, anchor=tkinter.CENTER)
+                self.button_contrast.place(
+                    relx=0.5, rely=0.8, anchor=tkinter.CENTER)
                 self.button_contrast.bind("<Enter>", self.contrast_focus_in)
-                self.button_contrast.bind("<Leave>", self.contrast_focus_out)            
+                self.button_contrast.bind("<Leave>", self.contrast_focus_out)
             else:
                 self.button_contrast = customtkinter.CTkButton(
                     master=self,
@@ -544,11 +582,10 @@ class Configuration_Window(customtkinter.CTkToplevel):
                     compound="left",
                     hover=False,
                 )
-                self.button_contrast.place(relx=0.5, rely=0.8, anchor=tkinter.CENTER)
+                self.button_contrast.place(
+                    relx=0.5, rely=0.8, anchor=tkinter.CENTER)
                 self.button_contrast.bind("<Enter>", self.contrast_focus_in)
                 self.button_contrast.bind("<Leave>", self.contrast_focus_out)
-
-
 
     def return_focus_in(self, event):
         if Contrast == False:
@@ -558,17 +595,17 @@ class Configuration_Window(customtkinter.CTkToplevel):
         else:
             self.button_return.configure(
                 fg_color="#000000", border_width=8, border_color="white"
-            )             
+            )
         if Sound == True:
             mixer.music.load(self.return_button_sound)
             mixer.music.play()
 
     def return_focus_out(self, event):
-        if Contrast == False:    
+        if Contrast == False:
             self.button_return.configure(fg_color="#4FB7FF", border_width=0)
         else:
-            self.button_return.configure(fg_color="#000000",border_width=0)
-           
+            self.button_return.configure(fg_color="#000000", border_width=0)
+
     def sound_focus_in(self, event):
         if Contrast == False:
             self.button_sound.configure(
@@ -577,7 +614,7 @@ class Configuration_Window(customtkinter.CTkToplevel):
         else:
             self.button_sound.configure(
                 fg_color="#000000", border_width=8, border_color="white"
-            )            
+            )
         if Sound == True:
             mixer.music.load(self.narrator_button_sound)
             mixer.music.play()
@@ -587,7 +624,6 @@ class Configuration_Window(customtkinter.CTkToplevel):
             self.button_sound.configure(fg_color="#4FB7FF", border_width=0)
         else:
             self.button_sound.configure(fg_color="#000000", border_width=0)
-           
 
     def contrast_focus_in(self, event):
         if Contrast == False:
@@ -597,7 +633,7 @@ class Configuration_Window(customtkinter.CTkToplevel):
         else:
             self.button_contrast.configure(
                 fg_color="#000000", border_width=8, border_color="white"
-            )       
+            )
         if Sound == True:
             mixer.music.load(self.contrast_button_sound)
             mixer.music.play()
@@ -606,7 +642,7 @@ class Configuration_Window(customtkinter.CTkToplevel):
         if Contrast == False:
             self.button_contrast.configure(fg_color="#4FB7FF", border_width=0)
         else:
-            self.button_contrast.configure(fg_color="#000000",border_width=0)
+            self.button_contrast.configure(fg_color="#000000", border_width=0)
 
     def scaling_optionemenu_focus_in(self, event):
         if Sound == True:
@@ -648,7 +684,6 @@ class Configuration_Window(customtkinter.CTkToplevel):
             customtkinter.set_appearance_mode("Light")
         self.update_idletasks()
 
-
     def open_main_windown(self):
         self.main_window = Main_Window(self)
         Configuration_Window.withdraw(self)
@@ -672,7 +707,8 @@ class Instructive_Window(customtkinter.CTkToplevel):
         # self.geometry(f"+{x}+{y}")
 
         # load images
-        image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "imgs")
+        image_path = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)), "imgs")
 
         self.image_return = customtkinter.CTkImage(
             Image.open(os.path.join(image_path, "return.png")), size=(120, 120)
@@ -687,7 +723,7 @@ class Instructive_Window(customtkinter.CTkToplevel):
         self.image_instructive = customtkinter.CTkImage(
             Image.open(os.path.join(image_path, "instructive.png")), size=(120, 120)
         )
-        
+
         # load and create background image
         """
         self.image_window_background = customtkinter.CTkImage(
@@ -700,10 +736,13 @@ class Instructive_Window(customtkinter.CTkToplevel):
         self.label_window_background.grid(row=0, column=0)
         """
         # load sounds
-        sound_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "sounds")
+        sound_path = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)), "sounds")
         mixer.init()
-        self.return_button_sound = os.path.join(sound_path, "return_button_sound.mp3")
-        self.handsign_label_sound = os.path.join(sound_path, "handsign_label_sound.mp3")
+        self.return_button_sound = os.path.join(
+            sound_path, "return_button_sound.mp3")
+        self.handsign_label_sound = os.path.join(
+            sound_path, "handsign_label_sound.mp3")
         self.configuration_label_sound = os.path.join(
             sound_path, "configuration_label_sound.mp3"
         )
@@ -722,10 +761,12 @@ class Instructive_Window(customtkinter.CTkToplevel):
             text="Modifica parametros de\naccesibilidad en la aplicación.",
             font=("Helvetica", 32),
         )
-        self.label_configuration.place(relx=0.6, rely=0.5, anchor=tkinter.CENTER)
-        self.label_configuration.bind("<Enter>", self.label_configuration_focus_in)
+        self.label_configuration.place(
+            relx=0.6, rely=0.5, anchor=tkinter.CENTER)
+        self.label_configuration.bind(
+            "<Enter>", self.label_configuration_focus_in)
         if Contrast == False:
-        # example buttons
+            # example buttons
             self.button_handsign = customtkinter.CTkButton(
                 master=self,
                 text="",
@@ -736,7 +777,8 @@ class Instructive_Window(customtkinter.CTkToplevel):
                 compound="left",
                 hover=False,
             )
-            self.button_handsign.place(relx=0.14, rely=0.2, anchor=tkinter.CENTER)
+            self.button_handsign.place(
+                relx=0.14, rely=0.2, anchor=tkinter.CENTER)
 
             self.button_configuration = customtkinter.CTkButton(
                 master=self,
@@ -748,7 +790,8 @@ class Instructive_Window(customtkinter.CTkToplevel):
                 compound="left",
                 hover=False,
             )
-            self.button_configuration.place(relx=0.14, rely=0.5, anchor=tkinter.CENTER)
+            self.button_configuration.place(
+                relx=0.14, rely=0.5, anchor=tkinter.CENTER)
 
             # functional button
             self.button_return = customtkinter.CTkButton(
@@ -762,11 +805,12 @@ class Instructive_Window(customtkinter.CTkToplevel):
                 compound="right",
                 hover=False,
             )
-            self.button_return.place(relx=0.87, rely=0.8, anchor=tkinter.CENTER)
+            self.button_return.place(
+                relx=0.87, rely=0.8, anchor=tkinter.CENTER)
             self.button_return.bind("<Enter>", self.return_focus_in)
             self.button_return.bind("<Leave>", self.return_focus_out)
         elif Contrast == True:
-        # example buttons
+            # example buttons
             self.button_handsign = customtkinter.CTkButton(
                 master=self,
                 text="",
@@ -777,7 +821,8 @@ class Instructive_Window(customtkinter.CTkToplevel):
                 compound="left",
                 hover=False,
             )
-            self.button_handsign.place(relx=0.14, rely=0.2, anchor=tkinter.CENTER)
+            self.button_handsign.place(
+                relx=0.14, rely=0.2, anchor=tkinter.CENTER)
 
             self.button_configuration = customtkinter.CTkButton(
                 master=self,
@@ -789,7 +834,8 @@ class Instructive_Window(customtkinter.CTkToplevel):
                 compound="left",
                 hover=False,
             )
-            self.button_configuration.place(relx=0.14, rely=0.5, anchor=tkinter.CENTER)
+            self.button_configuration.place(
+                relx=0.14, rely=0.5, anchor=tkinter.CENTER)
 
             # functional button
             self.button_return = customtkinter.CTkButton(
@@ -803,7 +849,8 @@ class Instructive_Window(customtkinter.CTkToplevel):
                 compound="right",
                 hover=False,
             )
-            self.button_return.place(relx=0.87, rely=0.8, anchor=tkinter.CENTER)
+            self.button_return.place(
+                relx=0.87, rely=0.8, anchor=tkinter.CENTER)
             self.button_return.bind("<Enter>", self.return_focus_in)
             self.button_return.bind("<Leave>", self.return_focus_out)
 
@@ -815,7 +862,7 @@ class Instructive_Window(customtkinter.CTkToplevel):
         else:
             self.button_return.configure(
                 fg_color="#000000", border_width=8, border_color="white"
-            )            
+            )
         if Sound == True:
             mixer.music.load(self.return_button_sound)
             mixer.music.play()
@@ -842,9 +889,12 @@ class Instructive_Window(customtkinter.CTkToplevel):
 
 
 class Handsign_Window(customtkinter.CTkToplevel):
-    '''   
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        global Capture
+        Capture = not Capture
+        print(Capture)
 
         cap = cv2.VideoCapture(0)
         detector = HandDetector(maxHands=1)
@@ -867,11 +917,10 @@ class Handsign_Window(customtkinter.CTkToplevel):
                 imgOutput = img.copy()
                 hands, img = detector.findHands(img)
 
+                cv2.imshow("Image", imgOutput)
+
                 key = cv2.waitKey(1)
-                if key == ord("s"):
-                    Capture = not Capture
-                    print(Capture)
-                # Si hay algo en las manos...
+
                 if hands:
                     hand = hands[0]
                     x, y, w, h = hand['bbox']
@@ -879,7 +928,8 @@ class Handsign_Window(customtkinter.CTkToplevel):
                     imgWhite = np.ones((imgSize, imgSize, 3), np.uint8) * 255
 
                     # Nos da el bounding box que necesitamos
-                    imgCrop = img[y - offset:y + h + offset, x - offset:x + w + offset]
+                    imgCrop = img[y - offset:y + h +
+                                  offset, x - offset:x + w + offset]
 
                     imgCropShape = imgCrop.shape
 
@@ -893,7 +943,8 @@ class Handsign_Window(customtkinter.CTkToplevel):
                         imgResizeShape = imgResize.shape
                         wGap = math.ceil((imgSize - wCal) / 2)
                         imgWhite[:, wGap:wCal + wGap] = imgResize
-                        prediction, index = classifier.getPrediction(imgWhite, draw=False)
+                        prediction, index = classifier.getPrediction(
+                            imgWhite, draw=False)
                         print(prediction, index)
                     else:
                         k = imgSize / w
@@ -902,25 +953,38 @@ class Handsign_Window(customtkinter.CTkToplevel):
                         imgResizeShape = imgResize.shape
                         hGap = math.ceil((imgSize - hCal) / 2)
                         imgWhite[hGap:hCal + hGap, :] = imgResize
-                        prediction, index = classifier.getPrediction(imgWhite, draw=False)
+                        prediction, index = classifier.getPrediction(
+                            imgWhite, draw=False)
 
                     cv2.rectangle(imgOutput, (x - offset, y - offset - 50),
-                                (x - offset + 90, y - offset - 50 + 50), (255, 0, 255), cv2.FILLED)
-                    cv2.putText(imgOutput, labels[index], (x, y - 26), cv2.FONT_HERSHEY_COMPLEX, 1.7, (255, 255, 255), 2)
+                                  (x - offset + 90, y - offset - 50 + 50), (255, 0, 255), cv2.FILLED)
+                    cv2.putText(imgOutput, labels[index], (x, y - 26),
+                                cv2.FONT_HERSHEY_COMPLEX, 1.7, (255, 255, 255), 2)
                     cv2.rectangle(imgOutput, (x - offset, y - offset),
-                                (x + w + offset, y + h + offset), (255, 0, 255), 4)
+                                  (x + w + offset, y + h + offset), (255, 0, 255), 4)
 
                     # cv2.imshow("ImageCrop", imgCrop)
                     # cv2.imshow("ImageWhite", imgWhite)
 
+                # center window on screen
+                # screen_width = self.winfo_screenwidth()
+                # screen_height = self.winfo_screenheight()
+                # x = int((screen_width) / 4)
+                # y = int((screen_height) / 4)
+                # self.geometry(f"+{x}+{y}")
+
+                # cv2.moveWindow("Image", x, y)
                 cv2.imshow("Image", imgOutput)
-                cv2.waitKey(1)  # Esperamos 1 milisegundo
-                key = cv2.waitKey(1)
+
                 if key == ord("s"):
+                    Handsign_Window.withdraw(self)
+                    cv2.destroyAllWindows()
                     break
+
             except:
                 print('Error')
-    '''         
+
+
 if __name__ == "__main__":
     app = Start_Window()
     app.mainloop()
